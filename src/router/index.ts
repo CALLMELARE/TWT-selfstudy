@@ -31,7 +31,7 @@ router.beforeEach((to, from, next) => {
   }
   // 访问权限设置
   if (to.meta.requireAuth) {
-    let token = getToken()
+    const token = getToken()
     // console.log(token);
     if (!token) {
       next({

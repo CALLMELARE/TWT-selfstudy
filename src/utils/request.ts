@@ -5,20 +5,21 @@ import store from '@/store'
 import axios, { AxiosResponse, AxiosRequestConfig } from 'axios'
 // import { Message, Modal } from 'view-design' // UI组件库
 import { Dialog, Toast } from 'vant'
-import router from '@/router'
-// 根据环境不同引入不同api地址
-import { config } from '@/config'
+import { getToken } from '@/utils/auth'
 
-
+const app_key = 'lemon'
+const app_secret = '7a858ff32628843043524b729cedfaa70623efc9'
+const domain = 'selfstudy.twt.edu.cn'
+const baseURL = 'https://selfstudy.twt.edu.cn/'
 
 const service = axios.create({
-  baseURL: config.baseApi + '/vue-h5', // url = base url + request url
+  baseURL: baseURL, // url = base url + request url
   timeout: 5000,
-  withCredentials: false， // send cookies when cross-domain requests
+  withCredentials: true, // send cookies when cross-domain requests
   headers: {
     domain,
     'Access-Control-Allow-Credentials': 'true',
-    ticket: window.btoa(`${app_key}.${app_secret}`),
+    ticket: window.btoa(`${app_key}.${app_secret}`)
   }
 })
 
@@ -32,10 +33,8 @@ service.interceptors.request.use(
         forbidClick: true
       })
     }
-    // 在此处添加请求头等，如添加 token
-    // if (store.state.token) {
-    // config.headers['Authorization'] = `Bearer ${store.state.token}`
-    // }
+    config.headers['token'] = getToken()
+
     return config
   },
   (error: any) => {
