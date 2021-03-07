@@ -11,7 +11,8 @@ import {
   Tabs,
   Divider,
   Field,
-  Form
+  Form,
+  Notify
 } from 'vant'
 
 const plugins = [
@@ -26,7 +27,8 @@ const plugins = [
   Tabs,
   Divider,
   Field,
-  Form
+  Form,
+  Notify
 ]
 
 export const vantPlugins = {

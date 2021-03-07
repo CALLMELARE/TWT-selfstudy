@@ -6,6 +6,7 @@ import axios, { AxiosResponse, AxiosRequestConfig } from 'axios'
 // import { Message, Modal } from 'view-design' // UI组件库
 import { Dialog, Toast } from 'vant'
 import { getToken } from '@/utils/auth'
+import qs from 'querystring'
 
 const app_key = 'lemon'
 const app_secret = '7a858ff32628843043524b729cedfaa70623efc9'
@@ -16,6 +17,22 @@ const service = axios.create({
   baseURL: baseURL, // url = base url + request url
   timeout: 5000,
   withCredentials: true, // send cookies when cross-domain requests
+  transformRequest: [
+    (oldData, config) => {
+      if (!config['Content-Type']) {
+        config['Content-Type'] = 'application/x-www-form-urlencoded'
+        return qs.stringify(oldData)
+      }
+      switch (config['Content-Type']) {
+        case 'multipart/form-data':
+          return oldData
+        case 'application/json':
+          return JSON.stringify(oldData)
+        default:
+          return qs.stringify(oldData)
+      }
+    }
+  ],
   headers: {
     domain,
     'Access-Control-Allow-Credentials': 'true',
@@ -45,27 +62,15 @@ service.interceptors.request.use(
 // Response interceptors
 service.interceptors.response.use(
   async (response: AxiosResponse) => {
-    // await new Promise(resovle => setTimeout(resovle, 3000))
+    // await new Promise((resovle) => setTimeout(resovle, 3000))
     Toast.clear()
     const res = response.data
-    if (res.code !== 0) {
-      // token 过期
-      if (res.code === 401) {
-        // 警告提示窗
-        return
-      }
-      if (res.code == 403) {
-        Dialog.alert({
-          title: '警告',
-          message: res.msg
-        }).then(() => {})
-        return
-      }
+    if (res.error_code !== 0) {
       // 若后台返回错误值，此处返回对应错误对象，下面 error 就会接收
-      return Promise.reject(new Error(res.msg || 'Error'))
+      return Promise.reject(new Error(res.message || 'Error'))
     } else {
       // 注意返回值
-      return response.data
+      return Promise.resolve(res.data)
     }
   },
   (error: any) => {
