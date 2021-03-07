@@ -12,7 +12,9 @@ import {
   Divider,
   Field,
   Form,
-  Notify
+  Notify,
+  Calendar,
+  PullRefresh
 } from 'vant'
 
 const plugins = [
@@ -28,7 +30,9 @@ const plugins = [
   Divider,
   Field,
   Form,
-  Notify
+  Notify,
+  Calendar,
+  PullRefresh
 ]
 
 export const vantPlugins = {

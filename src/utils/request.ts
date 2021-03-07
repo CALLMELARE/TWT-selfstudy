@@ -70,7 +70,7 @@ service.interceptors.response.use(
       return Promise.reject(new Error(res.message || 'Error'))
     } else {
       // 注意返回值
-      return Promise.resolve(res.data)
+      return Promise.resolve(res)
     }
   },
   (error: any) => {

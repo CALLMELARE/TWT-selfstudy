@@ -96,7 +96,7 @@ export default defineComponent({
       console.log(values)
       loginCommon(data)
         .then((val) => {
-          setToken(val.token)
+          setToken(val.data.token)
           Notify({
             type: 'success',
             message: '登录成功'
@@ -104,13 +104,13 @@ export default defineComponent({
           if (from) {
             router.push({ path: from })
           } else {
-            router.push({ path: '/' })
+            router.push({ path: '/home' })
           }
         })
         .catch((val) => {
           Notify({
             type: 'danger',
-            message: val.message
+            message: val.data.message
           })
         })
     }
@@ -122,7 +122,7 @@ export default defineComponent({
       console.log(values)
       loginWithSMS(data)
         .then((val) => {
-          setToken(val.token)
+          setToken(val.data.token)
           Notify({
             type: 'success',
             message: '登录成功'
@@ -130,13 +130,13 @@ export default defineComponent({
           if (from) {
             router.push({ path: from })
           } else {
-            router.push({ path: '/' })
+            router.push({ path: '/home' })
           }
         })
         .catch((val) => {
           Notify({
             type: 'danger',
-            message: val.message
+            message: val.data.message
           })
         })
     }
@@ -153,7 +153,7 @@ export default defineComponent({
         .catch((val) => {
           Notify({
             type: 'danger',
-            message: val.message
+            message: val.data.message
           })
         })
     }
