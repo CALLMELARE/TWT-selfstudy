@@ -190,8 +190,8 @@ export default defineComponent({
       .building-item {
         cursor: pointer;
         margin: 5px;
-        height: 50px;
-        line-height: 50px;
+        height: 70px;
+        line-height: 70px;
         color: #999999;
         font-weight: bold;
         border-radius: 5px;
