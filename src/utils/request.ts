@@ -7,11 +7,12 @@ import axios, { AxiosResponse, AxiosRequestConfig } from 'axios'
 import { Dialog, Toast } from 'vant'
 import { getToken } from '@/utils/auth'
 import qs from 'querystring'
+import config from '@/config'
 
-const app_key = 'lemon'
-const app_secret = '7a858ff32628843043524b729cedfaa70623efc9'
-const domain = 'selfstudy.twt.edu.cn'
-const baseURL = 'https://selfstudy.twt.edu.cn/'
+const app_key = config.app_key
+const app_secret = config.app_secret
+const domain = config.domain
+const baseURL = config.baseURL
 
 const service = axios.create({
   baseURL: baseURL, // url = base url + request url
