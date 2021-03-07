@@ -72,12 +72,15 @@ import { defineComponent, ref, reactive } from 'vue'
 import { loginCommon, loginVerifyCode, loginWithSMS } from '@/api/auth'
 import { Notify } from 'vant'
 import { setToken } from '@/utils/auth'
+import { getQueryParamByKey } from '@/utils'
+import router from '@/router'
 export default defineComponent({
   name: 'Login',
   props: {},
   setup() {
     const pattern = /^(13[0-9]|14[01456879]|15[0-3,5-9]|16[2567]|17[0-8]|18[0-9]|19[0-3,5-9])\d{8}$/
     const active = ref(0)
+    const from = getQueryParamByKey('from')
     const state = reactive({
       tel: '',
       sms: '',
@@ -98,6 +101,11 @@ export default defineComponent({
             type: 'success',
             message: '登录成功'
           })
+          if (from) {
+            router.push({ path: from })
+          } else {
+            router.push({ path: '/' })
+          }
         })
         .catch((val) => {
           Notify({
@@ -119,6 +127,11 @@ export default defineComponent({
             type: 'success',
             message: '登录成功'
           })
+          if (from) {
+            router.push({ path: from })
+          } else {
+            router.push({ path: '/' })
+          }
         })
         .catch((val) => {
           Notify({
