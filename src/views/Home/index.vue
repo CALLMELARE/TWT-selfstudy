@@ -8,7 +8,7 @@
           <van-icon name="exchange" size="14" />
         </div>
         <div class="header-right" @click="showCalendar = true">
-          <!-- {{ currentDate }} -->
+          {{ currentDate }}
         </div>
       </div>
       <van-pull-refresh v-model="state.loading" @refresh="onRefresh">

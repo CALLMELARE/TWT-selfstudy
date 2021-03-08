@@ -19,7 +19,9 @@
             <div
               class="classroom"
               v-bind:key="_i"
-              v-for="(_item, _i) in item.classrooms"
+              v-for="(_item, _i) in item.classrooms.sort(function(a, b) {
+                return parseInt(a.classroom) - parseInt(b.classroom)
+              })"
               @click="jumpTo(`/classroom`, state.currentBuilding.building_id, _item.classroom_id)"
             >
               <div class="name">
@@ -38,6 +40,7 @@
           </div>
         </div>
       </div>
+      <div class="bottom">已经到底了</div>
     </div>
   </div>
 </template>
@@ -214,6 +217,12 @@ export default defineComponent({
           box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
         }
       }
+    }
+    .bottom {
+      text-align: center;
+      font-size: 14px;
+      padding: 8px 0;
+      color: #999999;
     }
   }
 }
