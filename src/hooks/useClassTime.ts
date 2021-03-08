@@ -24,5 +24,7 @@ export const eachClass = (hour: number, minute: number) => {
     return 11
   } else if (time > 21.0 && time < 21.75) {
     return 12
+  } else {
+    return -1
   }
 }

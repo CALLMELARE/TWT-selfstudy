@@ -5,7 +5,9 @@
         <div class="header-left" @click="goBack">
           <van-icon name="arrow-left" />
         </div>
-        <div class="header-right"></div>
+        <div class="header-right" @click="getNowStatus">
+          <van-icon name="replay" />
+        </div>
       </div>
       <div class="building-name">{{ state.currentBuilding.building }}</div>
       <div v-if="state.currentBuilding" class="building">
@@ -35,7 +37,7 @@
 <script lang="ts">
 import { defineComponent, reactive } from 'vue'
 import router from '@/router'
-import { getBuildingList } from '@/api/selfstudy'
+import { eachClass } from '@/hooks/useClassTime'
 import { Notify } from 'vant'
 import { getQueryParamByKey } from '@/utils/index'
 import { sessionStorage } from '@/utils/storage'
@@ -61,16 +63,38 @@ export default defineComponent({
     const state = reactive({
       loading: false,
       building: ss,
-      currentBuilding: bList
+      currentBuilding: bList,
+      classNow: -1
     })
     function goBack() {
       router.push('/home')
+    }
+    function getNowStatus() {
+      const now = new Date()
+      const hour = now.getHours()
+      const minute = now.getMinutes()
+      state.classNow = eachClass(hour, minute)
+    }
+    function checkStatus(status: string, cc: number) {
+      // exp: status: '000000000000'
+      if (cc >= 1 && cc <= 12) {
+        const e = status.substring(cc - 1, 1)
+        if (e === '1') {
+          return true
+        } else {
+          return false
+        }
+      } else {
+        return true
+      }
     }
 
     return {
       goBack,
       state,
-      ss
+      ss,
+      getNowStatus,
+      checkStatus
     }
   },
   created() {
@@ -129,6 +153,7 @@ export default defineComponent({
         grid-template-columns: 25% 25% 25% 25%;
         .classroom {
           margin: 5px;
+          cursor: pointer;
           background: #eeeeee;
           border-radius: 5px;
           height: 60px;
@@ -159,6 +184,9 @@ export default defineComponent({
             color: #fff;
             border-radius: 0 0 5px 5px;
           }
+        }
+        .classroom:hover {
+          box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
         }
       }
     }
