@@ -22,7 +22,15 @@
               v-for="(_item, _i) in item.classrooms.sort(function(a, b) {
                 return parseInt(a.classroom) - parseInt(b.classroom)
               })"
-              @click="jumpTo(`/classroom`, state.currentBuilding.building_id, _item.classroom_id)"
+              @click="
+                jumpTo(
+                  `/classroom`,
+                  state.currentBuilding.building_id,
+                  _item.classroom_id,
+                  state.currentBuilding.building,
+                  _item.classroom
+                )
+              "
             >
               <div class="name">
                 {{ _item.classroom }}
@@ -84,8 +92,17 @@ export default defineComponent({
       router.push('/home')
     }
 
-    function jumpTo(p: string, buildingId: string, id: string) {
-      router.push({ path: p, query: { build: buildingId, id: id } })
+    function jumpTo(
+      p: string,
+      buildingId: string,
+      id: string,
+      building: string,
+      classroom: string
+    ) {
+      router.push({
+        path: p,
+        query: { build: buildingId, id: id, building: building, classroom: classroom }
+      })
     }
     function getNowStatus() {
       const now = new Date()
