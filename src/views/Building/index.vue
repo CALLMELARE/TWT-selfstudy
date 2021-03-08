@@ -5,8 +5,8 @@
         <div class="header-left" @click="goBack">
           <van-icon name="arrow-left" />
         </div>
-        <div class="header-right" @click="getNowStatus">
-          <van-icon name="replay" />
+        <div class="header-right">
+          <!-- <van-icon name="replay" /> -->
         </div>
       </div>
       <div class="building-name">{{ state.currentBuilding.building }}</div>
@@ -23,7 +23,13 @@
               <!-- <div class="capacity">
                 {{ _item.capacity }}
               </div> -->
-              <div class="status-free">
+              <div v-if="_item.status.substr(state.classNow - 1, 1) === '1'" class="status-busy">
+                占用
+              </div>
+              <div
+                v-else-if="_item.status.substr(state.classNow - 1, 1) === '0'"
+                class="status-free"
+              >
                 空闲
               </div>
             </div>
@@ -60,11 +66,15 @@ export default defineComponent({
   setup() {
     const ss = sessionStorage.get('building')
     const bList: Array<BuildingObj> = []
+    const now = new Date()
+    const hour = now.getHours()
+    const minute = now.getMinutes()
+    console.log(hour + '/' + minute)
     const state = reactive({
       loading: false,
       building: ss,
       currentBuilding: bList,
-      classNow: -1
+      classNow: eachClass(hour, minute)
     })
     function goBack() {
       router.push('/home')
@@ -74,6 +84,8 @@ export default defineComponent({
       const hour = now.getHours()
       const minute = now.getMinutes()
       state.classNow = eachClass(hour, minute)
+      console.log(hour + '/' + minute)
+      console.log(state.classNow)
     }
     function checkStatus(status: string, cc: number) {
       // exp: status: '000000000000'
@@ -106,6 +118,14 @@ export default defineComponent({
         this.state.currentBuilding = data[i]
       }
     }
+    console.log(this.state.classNow)
+    // // @ts-ignore
+    // for (let j = 0; j < this.state.currentBuilding.areas.length; j++) {
+    //   // @ts-ignore
+    //   this.state.currentBuilding.areas[j].sort(function(a: { building: string }, b: { building: string }) {
+    //     return parseInt(a.building) - parseInt(b.building)
+    //   })
+    // }
   }
 })
 </script>

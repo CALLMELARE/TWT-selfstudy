@@ -6,8 +6,9 @@ export const getSemesterInfo = () => {
   getFirstDayOfTerm()
     .then((val) => {
       const { result } = val
-      console.log(result)
-      sessionStorage.set('semesterStart', result.semesterStartAt)
+      // console.log(result)
+      sessionStorage.set('semesterStart', result.semesterStartTimestamp)
+      sessionStorage.set('semesterName',result.semesterName)
     })
     .catch((val) => {
       Notify({

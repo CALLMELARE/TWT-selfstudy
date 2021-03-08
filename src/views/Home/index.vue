@@ -38,7 +38,7 @@
   </div>
 </template>
 <script lang="ts">
-import { getBuildingList } from '@/api/selfstudy'
+import { getCertainDayData } from '@/api/selfstudy'
 import router from '@/router'
 import { Notify } from 'vant'
 import { defineComponent, reactive, ref } from 'vue'
@@ -54,7 +54,8 @@ export default defineComponent({
       currrentCampus: 1,
       BYY: building1,
       WJL: building2,
-      loading: false
+      loading: false,
+      firstLoad: true
     })
     const currentDate = ref('今天')
     const showCalendar = ref(false)
@@ -107,8 +108,17 @@ export default defineComponent({
       }
     }
     const onRefresh = () => {
+      const sName = sessionStorage.get('semesterName')
+      const sInfo = sessionStorage.get('semesterStart')
+      const now = new Date().getTime()
+      const diff = (now / 1000 - parseFloat(sInfo)) / (60 * 60 * 24)
+      const data = {
+        term: sName,
+        week: `${Math.floor(diff / 7) + 1}`,
+        day: `${Math.floor(diff % 7) + 1}`
+      }
       setTimeout(() => {
-        getBuildingList()
+        getCertainDayData(data)
           .then((val) => {
             const { data } = val
             Notify({
@@ -141,23 +151,35 @@ export default defineComponent({
     }
   },
   created() {
-    getBuildingList()
-      .then((val) => {
-        const { data } = val
-        Notify({
-          type: 'success',
-          message: val.message
+    if (this.state.firstLoad) {
+      const sName = sessionStorage.get('semesterName')
+      const sInfo = sessionStorage.get('semesterStart')
+      const now = new Date().getTime()
+      const diff = (now / 1000 - parseFloat(sInfo)) / (60 * 60 * 24)
+      const data = {
+        term: sName,
+        week: `${Math.floor(diff / 7) + 1}`,
+        day: `${Math.floor(diff % 7) + 1}`
+      }
+      getCertainDayData(data)
+        .then((val) => {
+          const { data } = val
+          Notify({
+            type: 'success',
+            message: val.message
+          })
+          sessionStorage.set('building', data)
+          this.state.firstLoad = false
+          // console.log(data)
+          this.checkCampus(data)
         })
-        sessionStorage.set('building', data)
-        console.log(data)
-        this.checkCampus(data)
-      })
-      .catch((val) => {
-        Notify({
-          type: 'danger',
-          message: val.message
+        .catch((val) => {
+          Notify({
+            type: 'danger',
+            message: val.message
+          })
         })
-      })
+    }
   }
 })
 </script>

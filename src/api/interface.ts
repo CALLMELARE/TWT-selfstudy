@@ -54,7 +54,7 @@ export interface deleteCollectionData {
 // -------- selfstudy.ts --------
 
 export interface getDayData {
-  term: string //学期 exp:18192
-  week: string //周 exp:9
-  day: string //日 exp:6
+  term: string | number //学期 exp:18192
+  week: string | number //周 exp:9
+  day: string | number //日 exp:6
 }
