@@ -16,13 +16,15 @@
             {{ item.area_id === '-1' ? '' : item.area_id + '区' }}
           </div>
           <div class="area-content">
-            <div class="classroom" v-bind:key="_i" v-for="(_item, _i) in item.classrooms">
+            <div
+              class="classroom"
+              v-bind:key="_i"
+              v-for="(_item, _i) in item.classrooms"
+              @click="jumpTo(`/classroom`, state.currentBuilding.building_id, _item.classroom_id)"
+            >
               <div class="name">
                 {{ _item.classroom }}
               </div>
-              <!-- <div class="capacity">
-                {{ _item.capacity }}
-              </div> -->
               <div v-if="_item.status.substr(state.classNow - 1, 1) === '1'" class="status-busy">
                 占用
               </div>
@@ -44,7 +46,6 @@
 import { defineComponent, reactive } from 'vue'
 import router from '@/router'
 import { eachClass } from '@/hooks/useClassTime'
-import { Notify } from 'vant'
 import { getQueryParamByKey } from '@/utils/index'
 import { sessionStorage } from '@/utils/storage'
 
@@ -79,6 +80,10 @@ export default defineComponent({
     function goBack() {
       router.push('/home')
     }
+
+    function jumpTo(p: string, buildingId: string, id: string) {
+      router.push({ path: p, query: { build: buildingId, id: id } })
+    }
     function getNowStatus() {
       const now = new Date()
       const hour = now.getHours()
@@ -106,7 +111,8 @@ export default defineComponent({
       state,
       ss,
       getNowStatus,
-      checkStatus
+      checkStatus,
+      jumpTo
     }
   },
   created() {
@@ -118,7 +124,6 @@ export default defineComponent({
         this.state.currentBuilding = data[i]
       }
     }
-    console.log(this.state.classNow)
     // // @ts-ignore
     // for (let j = 0; j < this.state.currentBuilding.areas.length; j++) {
     //   // @ts-ignore
