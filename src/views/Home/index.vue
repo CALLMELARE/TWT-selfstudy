@@ -8,7 +8,7 @@
           <van-icon name="exchange" size="14" />
         </div>
         <div class="header-right" @click="showCalendar = true">
-          {{ currentDate }}
+          <!-- {{ currentDate }} -->
         </div>
       </div>
       <van-pull-refresh v-model="state.loading" @refresh="onRefresh">
@@ -42,6 +42,7 @@ import { getBuildingList } from '@/api/selfstudy'
 import router from '@/router'
 import { Notify } from 'vant'
 import { defineComponent, reactive, ref } from 'vue'
+import { sessionStorage } from '@/utils/storage'
 
 const building1: Array<any> = []
 const building2: Array<any> = []
@@ -98,7 +99,7 @@ export default defineComponent({
     }
 
     function switchCampus() {
-      let c = state.currrentCampus
+      const c = state.currrentCampus
       if (c === 1) {
         state.currrentCampus = 2
       } else if (c === 2) {
@@ -114,7 +115,7 @@ export default defineComponent({
               type: 'success',
               message: val.message
             })
-            sessionStorage.setItem('building', JSON.stringify(data))
+            sessionStorage.set('building', data)
             checkCampus(data)
           })
           .catch((val) => {
@@ -147,7 +148,7 @@ export default defineComponent({
           type: 'success',
           message: val.message
         })
-        sessionStorage.setItem('building', JSON.stringify(data))
+        sessionStorage.set('building', data)
         console.log(data)
         this.checkCampus(data)
       })
@@ -163,7 +164,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .home-container {
   .warpper {
-    height: calc(100vh - 79px);
+    min-height: calc(100vh - 79px);
     padding: 12px;
     background: #fff;
     .header {

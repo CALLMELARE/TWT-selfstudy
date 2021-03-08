@@ -31,7 +31,6 @@ export default defineComponent({
     const state: ILayoutState = reactive({
       tabbars: [
         { title: '首页', to: { name: 'Home' }, icon: 'home-o' },
-        // { title: '案例', to: { name: 'Dome' }, icon: 'star-o' },
         { title: '收藏', to: { name: 'Fav' }, icon: 'star-o' }
       ],
       defaultActive: computed(() => {

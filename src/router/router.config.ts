@@ -24,6 +24,12 @@ export const constantRouterMap: Array<RouteRecordRaw> = [
         meta: { title: '收藏', keepAlive: false, showTab: true, requireAuth: true }
       },
       {
+        path: '/building',
+        name: 'Building',
+        component: () => import('@/views/Building/index.vue'),
+        meta: { title: '教学楼', keepAlive: false, showTab: true, requireAuth: false }
+      },
+      {
         path: '/login',
         name: 'Login',
         component: () => import('@/views/Login/index.vue'),
