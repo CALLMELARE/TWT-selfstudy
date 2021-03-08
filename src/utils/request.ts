@@ -7,12 +7,12 @@ import axios, { AxiosResponse, AxiosRequestConfig } from 'axios'
 import { Dialog, Toast } from 'vant'
 import { getToken } from '@/utils/auth'
 import qs from 'querystring'
-import config from '@/config'
+import siteConfig from '@/siteConfig'
 
-const app_key = config.app_key
-const app_secret = config.app_secret
-const domain = config.domain
-const baseURL = config.baseURL
+const app_key = siteConfig.appKey
+const app_secret = siteConfig.appSecret
+const domain = siteConfig.domain
+const baseURL = siteConfig.baseURL
 
 const service = axios.create({
   baseURL: baseURL, // url = base url + request url

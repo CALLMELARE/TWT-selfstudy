@@ -14,7 +14,7 @@
       <van-pull-refresh v-model="state.loading" @refresh="onRefresh">
         <div class="buildings" v-if="state.currrentCampus == 1">
           <div
-            @click="jumpTo(`/building?id=${item.building_id}`)"
+            @click="jumpTo(`/building`, item.building_id)"
             class="building-item"
             v-bind:key="i"
             v-for="(item, i) in state.WJL"
@@ -24,7 +24,7 @@
         </div>
         <div class="buildings" v-if="state.currrentCampus == 2">
           <div
-            @click="jumpTo(`/building?id=${item.building_id}`)"
+            @click="jumpTo(`/building`, item.building_id)"
             class="building-item"
             v-bind:key="i"
             v-for="(item, i) in state.BYY"
@@ -93,8 +93,8 @@ export default defineComponent({
       }
     }
 
-    function jumpTo(path: string) {
-      router.push({ path: path })
+    function jumpTo(p: string, id: string) {
+      router.push({ path: p, query: { id: id } })
     }
 
     function switchCampus() {
