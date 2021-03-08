@@ -11,28 +11,26 @@
           {{ currentDate }}
         </div>
       </div>
-      <van-pull-refresh v-model="state.loading" @refresh="onRefresh">
-        <div class="buildings" v-if="state.currrentCampus == 1">
-          <div
-            @click="jumpTo(`/building`, item.building_id)"
-            class="building-item"
-            v-bind:key="i"
-            v-for="(item, i) in state.WJL"
-          >
-            {{ item.building }}
-          </div>
+      <div class="buildings" v-if="state.currrentCampus == 1">
+        <div
+          @click="jumpTo(`/building`, item.building_id)"
+          class="building-item"
+          v-bind:key="i"
+          v-for="(item, i) in state.WJL"
+        >
+          {{ item.building }}
         </div>
-        <div class="buildings" v-if="state.currrentCampus == 2">
-          <div
-            @click="jumpTo(`/building`, item.building_id)"
-            class="building-item"
-            v-bind:key="i"
-            v-for="(item, i) in state.BYY"
-          >
-            {{ item.building }}
-          </div>
+      </div>
+      <div class="buildings" v-if="state.currrentCampus == 2">
+        <div
+          @click="jumpTo(`/building`, item.building_id)"
+          class="building-item"
+          v-bind:key="i"
+          v-for="(item, i) in state.BYY"
+        >
+          {{ item.building }}
         </div>
-      </van-pull-refresh>
+      </div>
     </div>
     <van-calendar color="#00a0e9" v-model:show="showCalendar" @confirm="onConfirm" />
   </div>
@@ -54,16 +52,16 @@ export default defineComponent({
       currrentCampus: 1,
       BYY: building1,
       WJL: building2,
-      loading: false,
       firstLoad: true
     })
     const currentDate = ref('今天')
     const showCalendar = ref(false)
-    const formatDate = (date: { getMonth: any; getDate: any; getYear?: any }) =>
+    const formatDate = (date: { getMonth: any; getDate: any; getYear?: any; getTime?: any }) =>
       `${date.getYear() + 1900}年${date.getMonth() + 1}月${date.getDate()}日`
-    const onConfirm = (value: { getMonth: any; getDate: any; getYear?: any }) => {
+    const onConfirm = (value: { getMonth: any; getDate: any; getYear?: any; getTime?: any }) => {
       showCalendar.value = false
       currentDate.value = formatDate(value)
+      onRefresh(value)
     }
 
     function checkCampus(data: any[]) {
@@ -107,10 +105,10 @@ export default defineComponent({
         state.currrentCampus = 1
       }
     }
-    const onRefresh = () => {
+    const onRefresh = (date: { getMonth: any; getDate: any; getYear?: any; getTime?: any }) => {
       const sName = sessionStorage.get('semesterName')
       const sInfo = sessionStorage.get('semesterStart')
-      const now = new Date().getTime()
+      const now = date.getTime()
       const diff = (now / 1000 - parseFloat(sInfo)) / (60 * 60 * 24)
       const data = {
         term: sName,
@@ -134,7 +132,6 @@ export default defineComponent({
               message: val.message
             })
           })
-        state.loading = false
       }, 1000)
     }
 
