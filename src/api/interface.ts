@@ -58,3 +58,9 @@ export interface getDayData {
   week: string | number //周 exp:9
   day: string | number //日 exp:6
 }
+
+export interface getClassData {
+  term: string | number //学期 exp:18192
+  week: string | number //周 exp:9
+  classroom_id: string | number //教室id exp:26107
+}

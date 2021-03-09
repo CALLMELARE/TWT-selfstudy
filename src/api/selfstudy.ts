@@ -1,5 +1,5 @@
 import service from '@/utils/request'
-import { getDayData } from '@/api/interface'
+import { getClassData, getDayData } from '@/api/interface'
 import siteConfig from '@/siteConfig'
 
 // 获取所有教学楼
@@ -14,6 +14,14 @@ export function getBuildingList() {
 export function getCertainDayData(data: getDayData) {
   return service({
     url: `getDayData/${data.term}/${data.week}/${data.day}`,
+    method: 'get'
+  })
+}
+
+// 获取某教室一周内占用情况
+export function getClassInWeek(data: getClassData) {
+  return service({
+    url: `getWeekData/${data.term}/${data.week}/${data.classroom_id}`,
     method: 'get'
   })
 }
