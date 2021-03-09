@@ -22,66 +22,79 @@
           收藏
         </div>
       </div>
-      <div class="table">
-        <div class="head"></div>
-        <div class="head">09/99</div>
-        <div class="head">09/99</div>
-        <div class="head active">09/99</div>
-        <div class="head">09/99</div>
-        <div class="head">09/99</div>
-        <div class="head">09/99</div>
-        <div class="head">09/99</div>
-        <div class="side">1</div>
-        <div class="box"></div>
-        <div class="box"></div>
-        <div class="box"></div>
-        <div class="box"></div>
-        <div class="box"></div>
-        <div class="box"></div>
-        <div class="box"></div>
-        <div class="side active">2</div>
-        <div class="box"></div>
-        <div class="box"></div>
-        <div class="box active"></div>
-        <div class="box"></div>
-        <div class="box"></div>
-        <div class="box"></div>
-        <div class="box"></div>
-        <div class="side">3</div>
-        <div class="box"></div>
-        <div class="box"></div>
-        <div class="box"></div>
-        <div class="box"></div>
-        <div class="box"></div>
-        <div class="box"></div>
-        <div class="box"></div>
-      </div>
+      <div class="table"></div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue'
+import { AreaHTMLAttributes, defineComponent, reactive } from 'vue'
 import router from '@/router'
 import { getQueryParamByKey } from '@/utils/index'
 import { sessionStorage } from '@/utils/storage'
+import { getClassInWeek } from '@/api/selfstudy'
+import { Notify } from 'vant'
+
+interface DayTableObj {
+  day?: number
+  status?: string
+}
 
 export default defineComponent({
   name: 'classroom',
   props: {},
   setup() {
-    const ss = sessionStorage.get('building')
+    const tableList: Array<DayTableObj> = []
     const state = reactive({
       building: getQueryParamByKey('building'),
       buildingId: getQueryParamByKey('build'),
       classroom: getQueryParamByKey('classroom'),
-      classroomId: getQueryParamByKey('id')
+      classroomId: getQueryParamByKey('id'),
+      classTabel: tableList,
     })
     function goBack() {
       const id = getQueryParamByKey('build')
       router.push({ path: '/building', query: { id: id } })
     }
     return { state, goBack }
+  },
+  created() {
+    const current = sessionStorage.get('date') || new Date()
+    const sName = sessionStorage.get('semesterName')
+    const sInfo = sessionStorage.get('semesterStart')
+    const diff = (current.getTime() / 1000 - parseFloat(sInfo)) / (60 * 60 * 24)
+    const data = {
+      term: sName,
+      week: `${Math.floor(diff / 7) + 1}`,
+      classroom_id: this.state.classroomId
+    }
+
+    function transMatrix(matrix: Array<DayTableObj>) {
+      let m = []
+      for (let i = 0; i < matrix.length; i++) {
+        m.push(matrix[i].status)
+      }
+      console.log(m)
+
+    }
+
+    getClassInWeek(data)
+      .then((val) => {
+        const { data } = val
+        Notify({
+          type: 'success',
+          message: val.message
+        })
+        this.state.classTabel = data
+        console.log(this.state.classTabel)
+        transMatrix(this.state.classTabel)
+      })
+      .catch((val) => {
+        Notify({
+          type: 'danger',
+          message: val.message
+        })
+      })
   }
 })
 </script>

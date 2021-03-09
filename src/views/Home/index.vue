@@ -62,6 +62,7 @@ export default defineComponent({
       showCalendar.value = false
       currentDate.value = formatDate(value)
       onRefresh(value)
+      sessionStorage.set('date', value)
     }
 
     function checkCampus(data: any[]) {
