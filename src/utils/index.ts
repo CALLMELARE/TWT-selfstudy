@@ -13,7 +13,7 @@ export function awaitWrap<T, U = any>(promise: Promise<T>): Promise<[U | null, T
 /*
  * 第一种方法：
  * @param paramName
- * 用来获取url中的某个参数
+ * 用来拉取url中的某个参数
  */
 export const getQueryParamByKey = (paramName: string) => {
   let url = document.location.toString()
@@ -35,7 +35,7 @@ export const getQueryParamByKey = (paramName: string) => {
   }
 }
 /*
- * 用来获取url中的所有参数
+ * 用来拉取url中的所有参数
  * let url = 'http://192.168.1.122:9020/?appId=wxf4b72971eacba4d6&loginScene=1#/'
  */
 export const getQueryParams = <T extends {}>(url = document.location.toString()) => {

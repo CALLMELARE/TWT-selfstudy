@@ -13,7 +13,7 @@ export const getSemesterInfo = () => {
     .catch((val) => {
       Notify({
         type: 'danger',
-        message: '获取学期信息失败'
+        message: '拉取学期信息失败'
       })
     })
 }

@@ -56,7 +56,11 @@ export default defineComponent({
     })
     const formatDate = (date: { getMonth: any; getDate: any; getYear?: any; getTime?: any }) =>
       `${date.getYear() + 1900}年${date.getMonth() + 1}月${date.getDate()}日`
-    const currentDate = ref(formatDate(new Date(sessionStorage.get('date'))) || '今天')
+    const currentDate = ref(
+      formatDate(new Date(sessionStorage.get('date')))
+        ? formatDate(new Date(sessionStorage.get('date')))
+        : '今天'
+    )
     const showCalendar = ref(false)
 
     const onConfirm = (value: { getMonth: any; getDate: any; getYear?: any; getTime?: any }) => {
@@ -121,10 +125,10 @@ export default defineComponent({
         getCertainDayData(data)
           .then((val) => {
             const { data } = val
-            Notify({
-              type: 'success',
-              message: val.message
-            })
+            // Notify({
+            //   type: 'success',
+            //   message: val.message
+            // })
             sessionStorage.set('building', data)
             checkCampus(data)
           })
@@ -163,10 +167,10 @@ export default defineComponent({
       getCertainDayData(data)
         .then((val) => {
           const { data } = val
-          Notify({
-            type: 'success',
-            message: val.message
-          })
+          // Notify({
+          //   type: 'success',
+          //   message: val.message
+          // })
           sessionStorage.set('building', data)
           this.state.firstLoad = false
           // console.log(data)

@@ -1,7 +1,7 @@
 import service from '@/utils/request'
 import { addCollectionData, deleteCollectionData } from '@/api/interface'
 
-// 以下接口在访问时需要在header中添加token字段，值为登录获取的token
+// 以下接口在访问时需要在header中添加token字段，值为登录拉取的token
 // header中还应含有以下字段
 // 	domain="xxx.xxx.xxx"
 // 	ticket="......"
@@ -17,7 +17,7 @@ export function addCollection(data: addCollectionData) {
   })
 }
 
-// 获取收藏的教室
+// 拉取收藏的教室
 export function getCollections() {
   return service({
     url: 'getCollections',

@@ -42,14 +42,14 @@ export const useWxJsSdk = (jsApiList = apiList, url = store.getters.initLink) =>
       })
     } catch (error) {
       console.log('useWxJsSdkError', error)
-      Toast.fail(error.msg || '获取jssdk配置失败')
+      Toast.fail(error.msg || '拉取jssdk配置失败')
       reject(error)
     }
   })
 }
 
 /**
- * 获取地理位置
+ * 拉取地理位置
  * @param {*} wx
  */
 export const getLocation = () => {

@@ -531,28 +531,28 @@ declare namespace WeixinJsSdk {
    */
   function updateTimelineShareData(options: UpdateTimelineShareData): void
   /**
-   * 获取“分享到朋友圈”按钮点击状态及自定义分享内容接口（即将废弃）
+   * 拉取“分享到朋友圈”按钮点击状态及自定义分享内容接口（即将废弃）
 
    */
   function onMenuShareTimeline(options: OnMenuShareTimelineOptions): void
 
   /**
-   * 获取“分享给朋友”按钮点击状态及自定义分享内容接口（即将废弃）
+   * 拉取“分享给朋友”按钮点击状态及自定义分享内容接口（即将废弃）
    */
   function onMenuShareAppMessage(options: OnMenuShareAppMessageOptions): void
 
   /**
-   * 获取“分享到QQ”按钮点击状态及自定义分享内容接口
+   * 拉取“分享到QQ”按钮点击状态及自定义分享内容接口
    */
   function onMenuShareQQ(options: OnMenuShareQQ): void
 
   /**
-   * 获取“分享到腾讯微博”按钮点击状态及自定义分享内容接口
+   * 拉取“分享到腾讯微博”按钮点击状态及自定义分享内容接口
    */
   function onMenuShareWeibo(options: OnMenuShareWeibo): void
 
   /**
-   * 获取“分享到QQ空间”按钮点击状态及自定义分享内容接口
+   * 拉取“分享到QQ空间”按钮点击状态及自定义分享内容接口
    */
   function onMenuShareQZone(options: OnMenuShareQZone): void
 
@@ -583,7 +583,7 @@ declare namespace WeixinJsSdk {
   function downloadImage(options: DownloadImageOptions): void
 
   /**
-   * 获取本地图片接口
+   * 拉取本地图片接口
    */
   function getLocalImgData(options: GetLocalImgDataOptions): void
 
@@ -650,7 +650,7 @@ declare namespace WeixinJsSdk {
    ****************************************************************************/
 
   /**
-   * 获取网络状态接口
+   * 拉取网络状态接口
    */
   function getNetworkType(options: Callbacks): void
 
@@ -664,7 +664,7 @@ declare namespace WeixinJsSdk {
   function openLocation(options: OpenLocationOptions): void
 
   /**
-   * 获取地理位置接口
+   * 拉取地理位置接口
    */
   function getLocation(options: GetLocationOptions): void
 
@@ -685,7 +685,7 @@ declare namespace WeixinJsSdk {
   /**
    * 监听周边ibeacon设备接口
    *
-   * 备注：上述摇一摇周边接口使用注意事项及更多返回结果说明，请参考：摇一摇周边获取设备信息
+   * 备注：上述摇一摇周边接口使用注意事项及更多返回结果说明，请参考：摇一摇周边拉取设备信息
    */
   function onSearchBeacons(options: Callbacks): void
 
@@ -741,7 +741,7 @@ declare namespace WeixinJsSdk {
    ****************************************************************************/
 
   /**
-   * 获取适用卡券列表并获取用户选择信息
+   * 拉取适用卡券列表并拉取用户选择信息
    */
   function chooseCard(options: ChooseCardOptions): void
 

@@ -222,10 +222,10 @@ export default defineComponent({
       })
     getCollections()
       .then((val) => {
-        Notify({
-          type: 'success',
-          message: '获取成功'
-        })
+        // Notify({
+        //   type: 'success',
+        //   message: '拉取成功'
+        // })
         const favList = val.data.classroom_id
         if (favList.includes(this.state.classroomId)) {
           this.state.inFav = true
