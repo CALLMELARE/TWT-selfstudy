@@ -51,12 +51,54 @@ export default defineComponent({
       classroom: getQueryParamByKey('classroom'),
       classroomId: getQueryParamByKey('id'),
       classTabel: tableList,
+      matrix: <any>[],
+      dateList: <any>[]
     })
+
+    function makeDate(data: any) {
+      var date = data
+      var month = date.getMonth()
+      var week = date.getDay()
+      var month = month + 1
+      var day = date.getDate()
+      // week：周几，day：几号
+      var weekArr = [
+        { week: '', day: '' },
+        { week: '', day: '' },
+        { week: '', day: '' },
+        { week: '', day: '' },
+        { week: '', day: '' },
+        { week: '', day: '' },
+        { week: '', day: '' }
+      ]
+      var leftNum = week - 1
+      // 本周内今天的后几天的数量
+      var rightNum = 7 - week
+      // 本周内今天的前几天
+      for (var i = 0; i < leftNum; i++) {
+        weekArr[i].week = (week - (week - i) + 1).toString()
+        if (i == 0) {
+          weekArr[i].day = (day - week + 1).toString()
+        } else {
+          weekArr[i].day = (day - (week - i) + 1).toString()
+        }
+      }
+      // 本周内今天的后几天
+      for (var i = 0; i < rightNum; i++) {
+        weekArr[i + week].week = (week + i + 1).toString()
+        weekArr[i + week].day = (day + i + 1).toString()
+      }
+      // 今天
+      weekArr[week - 1].week = week.toString()
+      weekArr[week - 1].day = day.toString()
+      console.log(weekArr)
+      state.dateList = weekArr
+    }
     function goBack() {
       const id = getQueryParamByKey('build')
       router.push({ path: '/building', query: { id: id } })
     }
-    return { state, goBack }
+    return { state, goBack, makeDate }
   },
   created() {
     const current = sessionStorage.get('date') || new Date()
@@ -70,12 +112,26 @@ export default defineComponent({
     }
 
     function transMatrix(matrix: Array<DayTableObj>) {
-      let m = []
+      let m: Array<string | undefined> = [],
+        r: Array<string | undefined> = []
       for (let i = 0; i < matrix.length; i++) {
         m.push(matrix[i].status)
       }
-      console.log(m)
-
+      // console.log(m)
+      // @ts-ignore
+      for (let i = 0; i < m[0].length; i++) {
+        // @ts-ignore
+        r[i] = []
+      }
+      for (let i = 0; i < m.length; i++) {
+        // @ts-ignore
+        for (let j = 0; j < m[i].length; j++) {
+          // @ts-ignore
+          r[j][i] = m[i][j]
+        }
+      }
+      // console.log(r)
+      return r
     }
 
     getClassInWeek(data)
@@ -86,8 +142,10 @@ export default defineComponent({
           message: val.message
         })
         this.state.classTabel = data
-        console.log(this.state.classTabel)
-        transMatrix(this.state.classTabel)
+        // console.log(this.state.classTabel)
+        this.state.matrix = transMatrix(this.state.classTabel)
+        this.makeDate(current)
+        console.log(this.state.matrix)
       })
       .catch((val) => {
         Notify({
