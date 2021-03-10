@@ -57,7 +57,7 @@ export default defineComponent({
                 // @ts-ignore
                 status: building[i].areas[j].classrooms[k].status,
                 // @ts-ignore
-                area: building[i].areas[j].area_id === '-1' ? '' : item.area_id + '区',
+                area: building[i].areas[j].area_id === '-1' ? '' : building[i].areas[j].area_id + '区',
                 // @ts-ignore
                 build: building[i].building,
                 // @ts-ignore

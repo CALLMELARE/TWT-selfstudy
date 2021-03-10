@@ -16,8 +16,11 @@
             {{ state.classroom }}
           </span>
         </div>
-        <div class="fav" @click="addFavClassroom">
-          收藏
+        <div class="fav" v-if="!state.inFav" @click="addFavClassroom">
+          加入收藏
+        </div>
+        <div v-else class="fav" @click="removeFavClassroom">
+          取消收藏
         </div>
       </div>
       <div class="tip-bar">
@@ -58,7 +61,7 @@ import { getQueryParamByKey } from '@/utils/index'
 import { sessionStorage } from '@/utils/storage'
 import { getClassInWeek } from '@/api/selfstudy'
 import { Notify } from 'vant'
-import { addCollection } from '@/api/fav'
+import { addCollection, deleteCollection, getCollections } from '@/api/fav'
 
 interface DayTableObj {
   day?: number
@@ -79,7 +82,8 @@ export default defineComponent({
       matrix: <any>[],
       dateList: <any>[],
       month: '',
-      day: ''
+      day: '',
+      inFav: false
     })
 
     function makeDate(data: any) {
@@ -133,6 +137,7 @@ export default defineComponent({
             type: 'success',
             message: '已收藏'
           })
+          state.inFav = true
         })
         .catch((val) => {
           Notify({
@@ -141,7 +146,24 @@ export default defineComponent({
           })
         })
     }
-    return { state, goBack, makeDate, addFavClassroom }
+    function removeFavClassroom() {
+      let data = { classroom_id: state.classroomId }
+      deleteCollection(data)
+        .then((val) => {
+          Notify({
+            type: 'success',
+            message: '已取消收藏'
+          })
+          state.inFav = false
+        })
+        .catch((val) => {
+          Notify({
+            type: 'danger',
+            message: val.data.message
+          })
+        })
+    }
+    return { state, goBack, makeDate, addFavClassroom, removeFavClassroom }
   },
   created() {
     const current = new Date(sessionStorage.get('date')) || new Date()
@@ -182,15 +204,32 @@ export default defineComponent({
     getClassInWeek(data)
       .then((val) => {
         const { data } = val
-        Notify({
-          type: 'success',
-          message: val.message
-        })
+        // Notify({
+        //   type: 'success',
+        //   message: val.message
+        // })
         this.state.classTabel = data
         // console.log(this.state.classTabel)
         this.state.matrix = transMatrix(this.state.classTabel)
         this.makeDate(current)
         console.log(this.state.matrix)
+      })
+      .catch((val) => {
+        Notify({
+          type: 'danger',
+          message: val.message
+        })
+      })
+    getCollections()
+      .then((val) => {
+        Notify({
+          type: 'success',
+          message: '获取成功'
+        })
+        const favList = val.data.classroom_id
+        if (favList.includes(this.state.classroomId)) {
+          this.state.inFav = true
+        }
       })
       .catch((val) => {
         Notify({

@@ -52,7 +52,7 @@ service.interceptors.request.use(
       })
     }
     config.headers['token'] = getToken()
-    config.headers['Cookie'] = getMsgCookie()
+    // config.headers['Cookie'] = getMsgCookie()
     return config
   },
   (error: any) => {
