@@ -5,9 +5,7 @@
         <div class="header-left" @click="goBack">
           <van-icon name="arrow-left" />
         </div>
-        <div class="header-right">
-          <!-- <van-icon name="replay" /> -->
-        </div>
+        <div class="header-right"></div>
       </div>
       <div class="description">
         <div class="name">
@@ -22,6 +20,13 @@
           收藏
         </div>
       </div>
+      <div class="tip-bar">
+        状态：
+        <div class="tip">
+          <span class="tip-box">空闲</span> <span class="tip-box active">占用</span>
+        </div>
+      </div>
+
       <div class="table-container">
         <div class="table">
           <div class="head">{{ state.month }}月</div>
@@ -230,8 +235,27 @@ export default defineComponent({
         cursor: pointer;
         font-size: 16px;
         line-height: 34px;
-        font-weight: bold;
         color: #808080;
+      }
+    }
+    .tip-bar {
+      padding: 10px 10px 0 10px;
+      display: flex;
+      font-size: 14px;
+      justify-content: space-between;
+      .tip {
+        .tip-box {
+          font-size: 12px;
+          width: 20px;
+          height: 10px;
+          padding: 3px;
+          border-radius: 3px;
+          background: #d6d6d6;
+        }
+        .active {
+          background: #808080;
+          color: #ffffff;
+        }
       }
     }
     .table-container {
