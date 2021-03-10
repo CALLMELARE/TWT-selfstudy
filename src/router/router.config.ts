@@ -36,6 +36,12 @@ export const constantRouterMap: Array<RouteRecordRaw> = [
         meta: { title: '教室', keepAlive: false, showTab: true, requireAuth: false }
       },
       {
+        path: '/user',
+        name: 'User',
+        component: () => import(/* webpackChunkName:'user'*/ '@/views/User/index.vue'),
+        meta: { title: '我的', keepAlive: false, showTab: true, requireAuth: true }
+      },
+      {
         path: '/login',
         name: 'Login',
         component: () => import(/* webpackChunkName:'login'*/ '@/views/Login/index.vue'),

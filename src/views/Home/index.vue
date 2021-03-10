@@ -41,6 +41,7 @@ import router from '@/router'
 import { Notify } from 'vant'
 import { defineComponent, reactive, ref } from 'vue'
 import { sessionStorage } from '@/utils/storage'
+import { getSemesterInfo } from '@/hooks/useEduWeek'
 
 const building1: Array<any> = []
 const building2: Array<any> = []
@@ -52,14 +53,12 @@ export default defineComponent({
       currrentCampus: 1,
       BYY: building1,
       WJL: building2,
-      firstLoad: true
+      firstLoad: false
     })
     const formatDate = (date: { getMonth: any; getDate: any; getYear?: any; getTime?: any }) =>
       `${date.getYear() + 1900}年${date.getMonth() + 1}月${date.getDate()}日`
     const currentDate = ref(
-      formatDate(new Date(sessionStorage.get('date')))
-        ? formatDate(new Date(sessionStorage.get('date')))
-        : '今天'
+      sessionStorage.get('date') ? formatDate(new Date(sessionStorage.get('date'))) : '今天'
     )
     const showCalendar = ref(false)
 
@@ -154,11 +153,14 @@ export default defineComponent({
     }
   },
   created() {
-    if (this.state.firstLoad) {
+    if (!this.state.firstLoad) {
       const sName = sessionStorage.get('semesterName')
       const sInfo = sessionStorage.get('semesterStart')
       const now = new Date().getTime()
       const diff = (now / 1000 - parseFloat(sInfo)) / (60 * 60 * 24)
+      if(!sessionStorage.get("date")){
+        sessionStorage.set("date",new Date())
+      }
       const data = {
         term: sName,
         week: `${Math.floor(diff / 7) + 1}`,
@@ -172,7 +174,7 @@ export default defineComponent({
           //   message: val.message
           // })
           sessionStorage.set('building', data)
-          this.state.firstLoad = false
+          this.state.firstLoad = true
           // console.log(data)
           this.checkCampus(data)
         })

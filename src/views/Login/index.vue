@@ -3,7 +3,7 @@
   <div class="home-container">
     <div class="warpper">
       <h2 class="title">登录天外天账号</h2>
-      <van-tabs v-model:active="active">
+      <van-tabs v-model:active="active" color="#00a0e9">
         <van-tab class="tab" title="密码登录">
           <van-form @submit="onSubmitPwd">
             <van-field
@@ -27,7 +27,7 @@
             </div>
           </van-form>
         </van-tab>
-        <van-tab class="tab" title="验证码登录">
+        <!-- <van-tab class="tab" title="验证码登录" disabled>
           <van-form @submit="onSubmitSMS">
             <van-field
               v-model="state.tel"
@@ -62,7 +62,7 @@
               </van-button>
             </div>
           </van-form>
-        </van-tab>
+        </van-tab> -->
       </van-tabs>
     </div>
   </div>
