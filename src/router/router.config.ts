@@ -14,31 +14,31 @@ export const constantRouterMap: Array<RouteRecordRaw> = [
       {
         path: '/home',
         name: 'Home',
-        component: () => import('@/views/Home/index.vue'),
+        component: () => import(/* webpackChunkName:'home'*/'@/views/Home/index.vue'),
         meta: { title: '首页', keepAlive: false, showTab: true, requireAuth: false }
       },
       {
         path: '/fav',
         name: 'Fav',
-        component: () => import('@/views/Fav/index.vue'),
+        component: () => import(/* webpackChunkName:'fav'*/'@/views/Fav/index.vue'),
         meta: { title: '收藏', keepAlive: false, showTab: true, requireAuth: true }
       },
       {
         path: '/building',
         name: 'Building',
-        component: () => import('@/views/Building/index.vue'),
+        component: () => import(/* webpackChunkName:'building'*/'@/views/Building/index.vue'),
         meta: { title: '教学楼', keepAlive: false, showTab: true, requireAuth: false }
       },
       {
         path: '/classroom',
         name: 'Classroom',
-        component: () => import('@/views/Classroom/index.vue'),
+        component: () => import(/* webpackChunkName:'classroom'*/'@/views/Classroom/index.vue'),
         meta: { title: '教室', keepAlive: false, showTab: true, requireAuth: false }
       },
       {
         path: '/login',
         name: 'Login',
-        component: () => import('@/views/Login/index.vue'),
+        component: () => import(/* webpackChunkName:'login'*/'@/views/Login/index.vue'),
         meta: { title: '登录', keepAlive: false, showTab: true, requireAuth: false }
       }
     ]
