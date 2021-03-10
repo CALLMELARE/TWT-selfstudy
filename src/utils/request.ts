@@ -5,7 +5,7 @@ import store from '@/store'
 import axios, { AxiosResponse, AxiosRequestConfig } from 'axios'
 // import { Message, Modal } from 'view-design' // UI组件库
 import { Dialog, Toast } from 'vant'
-import { getToken } from '@/utils/auth'
+import { getMsgCookie, getToken } from '@/utils/auth'
 import qs from 'querystring'
 import siteConfig from '@/siteConfig'
 
@@ -52,7 +52,7 @@ service.interceptors.request.use(
       })
     }
     config.headers['token'] = getToken()
-
+    config.headers['Cookie'] = getMsgCookie()
     return config
   },
   (error: any) => {

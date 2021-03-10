@@ -71,7 +71,7 @@
 import { defineComponent, ref, reactive } from 'vue'
 import { loginCommon, loginVerifyCode, loginWithSMS } from '@/api/auth'
 import { Notify } from 'vant'
-import { setToken } from '@/utils/auth'
+import { setMsgCookie, setToken } from '@/utils/auth'
 import { getQueryParamByKey } from '@/utils'
 import router from '@/router'
 export default defineComponent({
@@ -149,6 +149,7 @@ export default defineComponent({
             type: 'primary',
             message: '短信发送成功'
           })
+          setMsgCookie(val.data.cookie)
         })
         .catch((val) => {
           Notify({
