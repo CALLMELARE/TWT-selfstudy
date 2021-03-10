@@ -509,5 +509,5 @@ export default {
     }
   ],
   error_code: 0,
-  message: '拉取成功'
+  message: '获取成功'
 }

@@ -14,7 +14,9 @@ import {
   Form,
   Notify,
   Calendar,
-  PullRefresh
+  PullRefresh,
+  Empty,
+  ActionSheet
 } from 'vant'
 
 const plugins = [
@@ -32,7 +34,9 @@ const plugins = [
   Form,
   Notify,
   Calendar,
-  PullRefresh
+  PullRefresh,
+  Empty,
+  ActionSheet
 ]
 
 export const vantPlugins = {

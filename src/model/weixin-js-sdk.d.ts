@@ -741,7 +741,7 @@ declare namespace WeixinJsSdk {
    ****************************************************************************/
 
   /**
-   * 拉取适用卡券列表并获取用户选择信息
+   * 获取适用卡券列表并获取用户选择信息
    */
   function chooseCard(options: ChooseCardOptions): void
 

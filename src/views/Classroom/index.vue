@@ -16,7 +16,7 @@
             {{ state.classroom }}
           </span>
         </div>
-        <div class="fav">
+        <div class="fav" @click="addFavClassroom">
           收藏
         </div>
       </div>
@@ -58,6 +58,7 @@ import { getQueryParamByKey } from '@/utils/index'
 import { sessionStorage } from '@/utils/storage'
 import { getClassInWeek } from '@/api/selfstudy'
 import { Notify } from 'vant'
+import { addCollection } from '@/api/fav'
 
 interface DayTableObj {
   day?: number
@@ -124,7 +125,23 @@ export default defineComponent({
       const id = getQueryParamByKey('build')
       router.push({ path: '/building', query: { id: id } })
     }
-    return { state, goBack, makeDate }
+    function addFavClassroom() {
+      let data = { classroom_id: state.classroomId }
+      addCollection(data)
+        .then((val) => {
+          Notify({
+            type: 'success',
+            message: '已收藏'
+          })
+        })
+        .catch((val) => {
+          Notify({
+            type: 'danger',
+            message: val.data.message
+          })
+        })
+    }
+    return { state, goBack, makeDate, addFavClassroom }
   },
   created() {
     const current = new Date(sessionStorage.get('date')) || new Date()
