@@ -54,10 +54,11 @@ export default defineComponent({
       WJL: building2,
       firstLoad: true
     })
-    const currentDate = ref('今天')
-    const showCalendar = ref(false)
     const formatDate = (date: { getMonth: any; getDate: any; getYear?: any; getTime?: any }) =>
       `${date.getYear() + 1900}年${date.getMonth() + 1}月${date.getDate()}日`
+    const currentDate = ref(formatDate(new Date(sessionStorage.get('date'))) || '今天')
+    const showCalendar = ref(false)
+
     const onConfirm = (value: { getMonth: any; getDate: any; getYear?: any; getTime?: any }) => {
       showCalendar.value = false
       currentDate.value = formatDate(value)

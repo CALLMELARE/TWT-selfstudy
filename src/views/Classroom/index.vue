@@ -22,7 +22,26 @@
           收藏
         </div>
       </div>
-      <div class="table"></div>
+      <div class="table-container">
+        <div class="table">
+          <div class="head">{{ state.month }}月</div>
+          <div class="head" v-bind:key="item.week" v-for="item in state.dateList">
+            <div v-if="item.day === state.day" class="active">
+              {{ item.day }}
+            </div>
+            <div v-else>
+              {{ item.day }}
+            </div>
+          </div>
+        </div>
+        <div class="table" v-bind:key="item" v-for="(item, i) in state.matrix">
+          <div class="side">{{ i + 1 }}</div>
+          <div class="box" v-bind:key="_item" v-for="_item in item">
+            <div v-if="_item == '1'" class="active">&nbsp;</div>
+            <div v-else></div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -52,7 +71,9 @@ export default defineComponent({
       classroomId: getQueryParamByKey('id'),
       classTabel: tableList,
       matrix: <any>[],
-      dateList: <any>[]
+      dateList: <any>[],
+      month: '',
+      day: ''
     })
 
     function makeDate(data: any) {
@@ -101,7 +122,7 @@ export default defineComponent({
     return { state, goBack, makeDate }
   },
   created() {
-    const current = sessionStorage.get('date') || new Date()
+    const current = new Date(sessionStorage.get('date')) || new Date()
     const sName = sessionStorage.get('semesterName')
     const sInfo = sessionStorage.get('semesterStart')
     const diff = (current.getTime() / 1000 - parseFloat(sInfo)) / (60 * 60 * 24)
@@ -110,7 +131,9 @@ export default defineComponent({
       week: `${Math.floor(diff / 7) + 1}`,
       classroom_id: this.state.classroomId
     }
-
+    this.state.month = (current.getMonth() + 1).toString()
+    this.state.day = current.getDate().toString()
+    console.log(this.state.day)
     function transMatrix(matrix: Array<DayTableObj>) {
       let m: Array<string | undefined> = [],
         r: Array<string | undefined> = []
@@ -211,38 +234,43 @@ export default defineComponent({
         color: #808080;
       }
     }
-    .table {
-      display: grid;
-      grid-template-columns: 9% 13% 13% 13% 13% 13% 13% 13%;
-      font-size: 12px;
+    .table-container {
       padding: 10px;
+      .table {
+        display: grid;
+        grid-template-columns: 9% 13% 13% 13% 13% 13% 13% 13%;
+        font-size: 12px;
 
-      .head {
-        background: #d6d6d6;
-        color: #929292;
-        border-radius: 3px;
-        text-align: center;
-        margin: 1px;
-        padding: 3px 0;
-      }
-      .side {
-        background: #d6d6d6;
-        color: #929292;
-        border-radius: 3px;
-        text-align: center;
-        margin: 1px;
-        padding: 20px 0;
-      }
-      .box {
-        background: #d6d6d6;
-        border-radius: 3px;
-        text-align: center;
-        margin: 1px;
-        padding: 20px 0;
-      }
-      .active {
-        background: #808080;
-        color: #ffffff;
+        .head {
+          background: #d6d6d6;
+          color: #929292;
+          border-radius: 3px;
+          text-align: center;
+          margin: 1px;
+          line-height: 18px;
+        }
+        .side {
+          background: #d6d6d6;
+          color: #929292;
+          border-radius: 3px;
+          text-align: center;
+          margin: 1px;
+          padding: 12px 0;
+        }
+        .box {
+          background: #d6d6d6;
+          border-radius: 3px;
+          text-align: center;
+          margin: 1px;
+          line-height: 40px;
+        }
+        .active {
+          background: #808080;
+          color: #ffffff;
+          width: 100%;
+          height: 100%;
+          border-radius: 3px;
+        }
       }
     }
   }
