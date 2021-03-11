@@ -6,14 +6,15 @@
 
 ### 启动项目
 
-在src目录下创建config.ts文件，模板如下
+在src目录下创建siteConfig.ts文件，模板如下
 
 ```js
 export default {
   app_key: 'xxxx',
   app_secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
-  domain: 'xxx.com',
-  baseURL: 'xxx.com/'
+  domain: 'https://xxx.com',
+  baseURL: 'https://xxx.com/',
+  extraBaseUrl: 'https://xxx.com/'
 }
 
 ```
