@@ -8,7 +8,7 @@
         </div>
         <div class="header-right"></div>
       </div>
-      <div v-if="!state.favList.length" class="overall-container" style="padding-top:200px;">
+      <div v-if="!state.favList" class="overall-container" style="padding-top:200px;">
         这里还是空空如也呢
       </div>
       <div v-else class="overall-container">
@@ -48,6 +48,7 @@ import { defineComponent, reactive } from 'vue'
 import { Notify } from 'vant'
 import { sessionStorage } from '@/utils/storage'
 import router from '@/router'
+import { getCertainDayData } from '@/api/selfstudy'
 
 export default defineComponent({
   name: 'Home',
@@ -84,6 +85,35 @@ export default defineComponent({
     function handleFavClass(fav: any) {
       const building = sessionStorage.get('building')
       // console.log(building)
+      if (!building) {
+        const sName = sessionStorage.get('semesterName')
+        const sInfo = sessionStorage.get('semesterStart')
+        const date = sessionStorage.get('date')
+        const now = date.getTime()
+        const diff = (now / 1000 - parseFloat(sInfo)) / (60 * 60 * 24)
+        const data = {
+          term: sName,
+          week: `${Math.floor(diff / 7) + 1}`,
+          day: `${Math.floor(diff % 7) + 1}`
+        }
+        setTimeout(() => {
+          getCertainDayData(data)
+            .then((val) => {
+              const { data } = val
+              // Notify({
+              //   type: 'success',
+              //   message: val.message
+              // })
+              sessionStorage.set('building', data)
+            })
+            .catch((val) => {
+              Notify({
+                type: 'danger',
+                message: val.message
+              })
+            })
+        }, 1000)
+      }
       const favs = []
       console.log(fav)
       for (let i = 0; i < building.length; i++) {
@@ -215,7 +245,7 @@ export default defineComponent({
           }
         }
       }
-      .fav-item:hover{
+      .fav-item:hover {
         border-bottom: 1px solid #808080;
       }
     }

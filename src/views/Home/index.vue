@@ -36,7 +36,7 @@
   </div>
 </template>
 <script lang="ts">
-import { getCertainDayData } from '@/api/selfstudy'
+import { getCertainDayData, getFirstDayOfTerm } from '@/api/selfstudy'
 import router from '@/router'
 import { Notify } from 'vant'
 import { defineComponent, reactive, ref } from 'vue'
@@ -154,36 +154,80 @@ export default defineComponent({
   },
   created() {
     if (!this.state.firstLoad) {
-      const sName = sessionStorage.get('semesterName')
-      const sInfo = sessionStorage.get('semesterStart')
-      const now = new Date().getTime()
-      const diff = (now / 1000 - parseFloat(sInfo)) / (60 * 60 * 24)
-      if(!sessionStorage.get("date")){
-        sessionStorage.set("date",new Date())
-      }
-      const data = {
-        term: sName,
-        week: `${Math.floor(diff / 7) + 1}`,
-        day: `${Math.floor(diff % 7) + 1}`
-      }
-      getCertainDayData(data)
+      getFirstDayOfTerm()
         .then((val) => {
-          const { data } = val
-          // Notify({
-          //   type: 'success',
-          //   message: val.message
-          // })
-          sessionStorage.set('building', data)
-          this.state.firstLoad = true
-          // console.log(data)
-          this.checkCampus(data)
+          const { result } = val
+          // console.log(result)
+          sessionStorage.set('semesterStart', result.semesterStartTimestamp)
+          sessionStorage.set('semesterName', result.semesterName)
+          const sName = result.semesterName
+          const sInfo = result.semesterStartTimestamp
+          const now = new Date().getTime()
+          const diff = (now / 1000 - parseFloat(sInfo)) / (60 * 60 * 24)
+          if (!sessionStorage.get('date')) {
+            sessionStorage.set('date', new Date())
+          }
+          const data = {
+            term: sName,
+            week: `${Math.floor(diff / 7) + 1}`,
+            day: `${Math.floor(diff % 7) + 1}`
+          }
+          getCertainDayData(data)
+            .then((val) => {
+              const { data } = val
+              // Notify({
+              //   type: 'success',
+              //   message: val.message
+              // })
+              sessionStorage.set('building', data)
+              this.state.firstLoad = true
+              // console.log(data)
+              this.checkCampus(data)
+            })
+            .catch((val) => {
+              Notify({
+                type: 'danger',
+                message: val.message
+              })
+            })
         })
         .catch((val) => {
           Notify({
             type: 'danger',
-            message: val.message
+            message: '拉取学期信息失败'
           })
         })
+      // 废弃代码
+      // const sName = sessionStorage.get('semesterName')
+      // const sInfo = sessionStorage.get('semesterStart')
+      // const now = new Date().getTime()
+      // const diff = (now / 1000 - parseFloat(sInfo)) / (60 * 60 * 24)
+      // if (!sessionStorage.get('date')) {
+      //   sessionStorage.set('date', new Date())
+      // }
+      // const data = {
+      //   term: sName,
+      //   week: `${Math.floor(diff / 7) + 1}`,
+      //   day: `${Math.floor(diff % 7) + 1}`
+      // }
+      // getCertainDayData(data)
+      //   .then((val) => {
+      //     const { data } = val
+      //     // Notify({
+      //     //   type: 'success',
+      //     //   message: val.message
+      //     // })
+      //     sessionStorage.set('building', data)
+      //     this.state.firstLoad = true
+      //     // console.log(data)
+      //     this.checkCampus(data)
+      //   })
+      //   .catch((val) => {
+      //     Notify({
+      //       type: 'danger',
+      //       message: val.message
+      //     })
+      //   })
     }
   }
 })

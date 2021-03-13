@@ -1,7 +1,6 @@
 /**
  * @description [ axios 请求封装]
  */
-import store from '@/store'
 import axios, { AxiosResponse, AxiosRequestConfig } from 'axios'
 // import { Message, Modal } from 'view-design' // UI组件库
 import { Dialog, Toast } from 'vant'
@@ -124,8 +123,6 @@ service.interceptors.response.use(
       error.message = '连接到服务器失败，请联系管理员'
     }
     Toast(error.message)
-    // store.auth.clearAuth()
-    store.dispatch('clearAuth')
     return Promise.reject(error)
   }
 )
