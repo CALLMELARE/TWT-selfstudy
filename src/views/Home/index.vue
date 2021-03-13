@@ -41,7 +41,6 @@ import router from '@/router'
 import { Notify } from 'vant'
 import { defineComponent, reactive, ref } from 'vue'
 import { sessionStorage } from '@/utils/storage'
-import { getSemesterInfo } from '@/hooks/useEduWeek'
 
 const building1: Array<any> = []
 const building2: Array<any> = []
@@ -49,8 +48,16 @@ export default defineComponent({
   name: 'Home',
   props: {},
   setup() {
+    function getCurrentCampus() {
+      let ss = sessionStorage.get('campus')
+      if (ss) {
+        return ss
+      } else {
+        return 1
+      }
+    }
     const state = reactive({
-      currrentCampus: 1,
+      currrentCampus: getCurrentCampus(),
       BYY: building1,
       WJL: building2,
       firstLoad: false
@@ -98,8 +105,10 @@ export default defineComponent({
     function switchCampus() {
       const c = state.currrentCampus
       if (c === 1) {
+        sessionStorage.set('campus', 2)
         state.currrentCampus = 2
       } else if (c === 2) {
+        sessionStorage.set('campus', 1)
         state.currrentCampus = 1
       }
     }
