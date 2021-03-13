@@ -16,7 +16,7 @@
           class="fav-item"
           v-bind:key="i"
           v-for="(item, i) in state.favs"
-          @click="jumpTo(`/classroom`, item.build_id, item.id, item.build, item.name)"
+          @click="jumpTo(`/classroom`, item.buildId, item.id, item.build, item.name)"
         >
           <div class="top">
             <span class="top-left">
@@ -50,13 +50,24 @@ import { sessionStorage } from '@/utils/storage'
 import router from '@/router'
 import { getCertainDayData } from '@/api/selfstudy'
 
+interface FavItem {
+  id: number | string
+  name: number | string
+  status: number | string
+  area: number | string
+  build: number | string
+  buildId: number | string
+  campus: number | string
+}
+
 export default defineComponent({
   name: 'Home',
   props: {},
   setup() {
+    const list: Array<FavItem> = []
     const state = reactive({
       favList: [],
-      favs: []
+      favs: list
     })
 
     function campusName(c: number) {
@@ -121,28 +132,20 @@ export default defineComponent({
           for (let k = 0; k < building[i].areas[j].classrooms.length; k++) {
             if (fav.includes(building[i].areas[j].classrooms[k].classroom_id)) {
               favs.push({
-                // @ts-ignore
                 id: building[i].areas[j].classrooms[k].classroom_id,
-                // @ts-ignore
                 name: building[i].areas[j].classrooms[k].classroom,
-                // @ts-ignore
                 status: building[i].areas[j].classrooms[k].status,
-                // @ts-ignore
                 area:
                   building[i].areas[j].area_id === '-1' ? '' : building[i].areas[j].area_id + '区',
-                // @ts-ignore
                 build: building[i].building,
-                // @ts-ignore
-                build_id: building[i].building_id,
-                // @ts-ignore
+                buildId: building[i].building_id,
                 campus: building[i].campus_id
               })
             }
           }
         }
       }
-      console.log(favs)
-      // @ts-ignore
+      // console.log(favs)
       state.favs = favs
     }
     return { state, handleFavClass, campusName, jumpTo }

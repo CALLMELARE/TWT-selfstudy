@@ -10,11 +10,11 @@
 <script lang="ts">
 import { defineComponent, watch } from 'vue'
 import { config } from '@/config/index'
-import MobileConsole from '@/components/Common/MobileConsole/index.vue'
+// import MobileConsole from '@/components/Common/MobileConsole/index.vue'
 // import { getSemesterInfo } from './hooks/useEduWeek'
 export default defineComponent({
   name: 'App',
-  components: { MobileConsole },
+  // components: { MobileConsole },
   setup() {
     // getSemesterInfo()
     console.log('环境配置', config)

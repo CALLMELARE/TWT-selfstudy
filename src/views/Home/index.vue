@@ -62,13 +62,6 @@ export default defineComponent({
     )
     const showCalendar = ref(false)
 
-    const onConfirm = (value: { getMonth: any; getDate: any; getYear?: any; getTime?: any }) => {
-      showCalendar.value = false
-      currentDate.value = formatDate(value)
-      onRefresh(value)
-      sessionStorage.set('date', value)
-    }
-
     function checkCampus(data: any[]) {
       state.BYY = []
       state.WJL = []
@@ -139,7 +132,12 @@ export default defineComponent({
           })
       }, 1000)
     }
-
+    const onConfirm = (value: { getMonth: any; getDate: any; getYear?: any; getTime?: any }) => {
+      showCalendar.value = false
+      currentDate.value = formatDate(value)
+      onRefresh(value)
+      sessionStorage.set('date', value)
+    }
     return {
       state,
       currentDate,
