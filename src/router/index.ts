@@ -52,8 +52,6 @@ router.afterEach((to, from, next) => {
   } else {
     url = window.location.href
   }
-  // 保存url
-  store.commit('link/SET_INIT_LINK', url)
 })
 
 export default router

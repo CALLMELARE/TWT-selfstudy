@@ -105,6 +105,7 @@ export default defineComponent({
       })
     }
     function getNowStatus() {
+      // 根据时间获取当前是第几节课
       const now = new Date()
       const hour = now.getHours()
       const minute = now.getMinutes()
@@ -113,6 +114,7 @@ export default defineComponent({
       console.log(state.classNow)
     }
     function checkStatus(status: string, cc: number) {
+      // 根据某状态串判断第cc节课是否占用
       // exp: status: '000000000000'
       if (cc >= 1 && cc <= 12) {
         const e = status.substring(cc - 1, 1)
