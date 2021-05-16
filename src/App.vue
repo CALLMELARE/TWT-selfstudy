@@ -21,4 +21,10 @@ export default defineComponent({
   }
 })
 </script>
-<style lang="scss"></style>
+<style lang="scss">
+@media screen and (min-width: 540px) {
+  html{
+    font-size: 100px !important;
+  }
+}
+</style>
