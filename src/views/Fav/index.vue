@@ -3,12 +3,10 @@
   <div class="home-container">
     <div class="warpper">
       <div class="header">
-        <div class="header-left">
-          我的收藏
-        </div>
+        <div class="header-left">我的收藏</div>
         <div class="header-right"></div>
       </div>
-      <div v-if="!state.favList" class="overall-container" style="padding-top:200px;">
+      <div v-if="!state.favList" class="overall-container" style="padding-top: 200px">
         这里还是空空如也呢
       </div>
       <div v-else class="overall-container">
@@ -107,7 +105,8 @@ export default defineComponent({
           week: `${Math.floor(diff / 7) + 1}`,
           day: `${Math.floor(diff % 7) + 1}`
         }
-        setTimeout(() => {
+        // setTimeout(() => {
+        if (data.term && data.week && data.day) {
           getCertainDayData(data)
             .then((val) => {
               const { data } = val
@@ -123,7 +122,13 @@ export default defineComponent({
                 message: val.message
               })
             })
-        }, 1000)
+        } else {
+          Notify({
+            type: 'danger',
+            message: '不是有效的日期'
+          })
+        }
+        // }, 1000)
       }
       const favs = []
       console.log(fav)

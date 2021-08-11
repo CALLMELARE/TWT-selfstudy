@@ -17,7 +17,7 @@ export default defineComponent({
   // components: { MobileConsole },
   setup() {
     // getSemesterInfo()
-    console.log('环境配置', config)
+    // console.log('环境配置', config)
   }
 })
 </script>

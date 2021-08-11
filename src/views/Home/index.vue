@@ -80,10 +80,10 @@ export default defineComponent({
         }
       }
       // 自小到大排序
-      state.WJL.sort(function(a, b) {
+      state.WJL.sort(function (a, b) {
         return parseInt(a.building) - parseInt(b.building)
       })
-      state.BYY.sort(function(a, b) {
+      state.BYY.sort(function (a, b) {
         return parseInt(a.building) - parseInt(b.building)
       })
     }
@@ -122,7 +122,8 @@ export default defineComponent({
         week: `${Math.floor(diff / 7) + 1}`,
         day: `${Math.floor(diff % 7) + 1}`
       }
-      setTimeout(() => {
+      // setTimeout(() => {
+      if (data.term && data.week && data.day) {
         getCertainDayData(data)
           .then((val) => {
             const { data } = val
@@ -131,7 +132,6 @@ export default defineComponent({
             //   message: val.message
             // })
             sessionStorage.set('building', data)
-            checkCampus(data)
           })
           .catch((val) => {
             Notify({
@@ -139,7 +139,13 @@ export default defineComponent({
               message: val.message
             })
           })
-      }, 1000)
+      } else {
+        Notify({
+          type: 'danger',
+          message: '不是有效的日期'
+        })
+      }
+      // }, 1000)
     }
     const onConfirm = (value: { getMonth: any; getDate: any; getYear?: any; getTime?: any }) => {
       showCalendar.value = false
@@ -179,24 +185,31 @@ export default defineComponent({
             week: `${Math.floor(diff / 7) + 1}`,
             day: `${Math.floor(diff % 7) + 1}`
           }
-          getCertainDayData(data)
-            .then((val) => {
-              const { data } = val
-              // Notify({
-              //   type: 'success',
-              //   message: val.message
-              // })
-              sessionStorage.set('building', data)
-              this.state.firstLoad = true
-              // console.log(data)
-              this.checkCampus(data)
-            })
-            .catch((val) => {
-              Notify({
-                type: 'danger',
-                message: val.message
+          if (data.term && data.week && data.day) {
+            getCertainDayData(data)
+              .then((val) => {
+                const { data } = val
+                // Notify({
+                //   type: 'success',
+                //   message: val.message
+                // })
+                sessionStorage.set('building', data)
+                this.state.firstLoad = true
+                // console.log(data)
+                this.checkCampus(data)
               })
+              .catch((val) => {
+                Notify({
+                  type: 'danger',
+                  message: val.message
+                })
+              })
+          } else {
+            Notify({
+              type: 'danger',
+              message: '不是有效的日期'
             })
+          }
         })
         .catch((val) => {
           Notify({
